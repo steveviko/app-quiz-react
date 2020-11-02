@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const API_URL = "https://opentdb.com/api.php?amount=10&category=14&difficulty=easy";
 
 function App() {
+  const[questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+      // console.log(data);
+      setQuestions(data.results)
+    })
+
+    
+  }, []);
+
   return (
     <div className="container">
-      <div className="bg-white text-purple-800 p-10 rounded-lg shadow-md">
-        <h2 className="text-2xl"> 1. questions place holder </h2>
+      <div className="bg-white text-purple-800 p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl">{questions[0].question}</h2>
         
         </div>
-      <div className="flex flex-wrap mt-4 justify-around bg-white">
-        <button className="bg-white w-5/12 p-4 text-purple-800 font-semibold rounded shadow mb-4">answer placeholder 2</button >
-        <button className="bg-white w-5/12 p-4 text-purple-800 font-semibold rounded shadow mb-4">answer placeholder 3</button >
-        <button className="bg-white w-5/12 p-4 text-purple-800 font-semibold rounded shadow">answer placeholder 1</button >
-        <button className="bg-white w-5/12 p-4 text-purple-800 font-semibold rounded shadow" >answer placeholder 4</button >
+      <div className="grid grid-cols-2 gap-6 mt-6">
+        <button className="bg-white  p-4 text-purple-800 font-semibold rounded shadow">{questions[0].correct_answer}</button >
+        <button className="bg-white  p-4 text-purple-800 font-semibold rounded shadow">{questions[0].incorrect_answers[0]}</button >
+        <button className="bg-white  p-4 text-purple-800 font-semibold rounded shadow">{questions[0].incorrect_answers[1]}</button >
+        <button className="bg-white  p-4 text-purple-800 font-semibold rounded shadow" >{questions[0].incorrect_answers[2]}</button >
       </div>
     </div>
   );
