@@ -1,3 +1,3 @@
-import Questionaire from './Questions';
+import Questions from './Questions';
 
-export { Questionaire};
+export { Questions };
