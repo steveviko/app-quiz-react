@@ -17,11 +17,14 @@ function App() {
 
     
   }, []);
+  const handleAnswer =(answer) => {
+    //check for answer
+  }
 
   return (
     <div className="container">
       {questions.length > 0 ? (
-        <Questions data={questions[0]} />
+        <Questions data={questions[0] } handleAnswer={handleAnswer} />
       ) :(
         <h2 className="text-2xl text-white">The questions are Loadding .....please wait</h2>
       )}
