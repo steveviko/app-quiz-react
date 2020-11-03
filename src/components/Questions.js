@@ -2,8 +2,10 @@ import React from 'react';
   
 
 
-const Questions = ({showAnswers, handleAnswer, data: { question, correct_answer, incorrect_answers}}) => {
-    const shuffleAnswers = [correct_answer, ...incorrect_answers].sort(() => Math.random()-0.5);
+const Questions = ({handleNextQuestion, showAnswers, handleAnswer, data: 
+    { question, correct_answer, answers},}) => {
+        
+    // const shuffleAnswers = [correct_answer, ...incorrect_answers].sort(() => Math.random()-0.5);
 
     
             
@@ -14,14 +16,14 @@ const Questions = ({showAnswers, handleAnswer, data: { question, correct_answer,
         </div>
 
         <div className="grid grid-cols-2 gap-6 mt-6">
-            {shuffleAnswers.map((answer) => {
+            {answers.map((answer, idx) => {
             const bgColor = showAnswers ? answer === correct_answer ? 'bg-green-500' : 'bg-red-500' : 'bg-white';
            
-            const textColor = showAnswers ? 'text-white' :'text-purple-800'; 
+            // const textColor = showAnswers ? 'text-white' :'text-purple-800'; 
            
             return (
            
-            <button  className={` ${bgColor}  ${textColor}
+            <button  key={idx} className={` ${bgColor}  
                  p-4 text-purple-800 font-semibold rounded shadow `}
                  onClick={() => handleAnswer(answer)}
                 
@@ -31,10 +33,17 @@ const Questions = ({showAnswers, handleAnswer, data: { question, correct_answer,
             ) })}
            
         </div>
-        <button className={` ml-auto bg-purple-700
-                 p-4 text-purple-800 font-semibold rounded shadow mt-6 `}>
-            Next Question
+        {showAnswers && (
+            
+        <button 
+        onClick={handleNextQuestion}
+        className={` ml-auto bg-purple-700
+        p-4 text-purple-800 font-semibold rounded shadow mt-6 `}>
+        Next Question
         </button>
+
+        )}
+        
 
     </div>
     );

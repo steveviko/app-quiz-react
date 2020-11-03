@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import {Questions } from './components'
 
-const API_URL = "https://opentdb.com/api.php?amount=10&category=14&difficulty=easy";
+const API_URL = "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
 
 function App() {
   const[questions, setQuestions] = useState([]);
@@ -10,21 +10,33 @@ function App() {
   const [score, setScore] = useState(0); 
   const [gameEnded, setGameEnded] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
+  
 
   useEffect(() => {
     fetch(API_URL)
     .then(res => res.json())
     .then(data => {
       // console.log(data);
-      setQuestions(data.results)
-      setCurrentIdex(0)
+      // setQuestions(data.results)
+      const questions = data.results.map( (question) => ({
+
+        ...question,
+        answers:[
+          question.correct_answer,
+          ...question.incorrect_answers
+        ].sort(() => Math.random() - 0.5)
+
+      }))
+      // setCurrentIdex(0)
+      setQuestions(questions)
     })
 
     
   }, []);
+
+  
   const handleAnswer =(answer) => {
-    const newIndex = currentIdex + 1;
-    setCurrentIdex(newIndex);
+   
     //stop double answers
     if(!showAnswers){
     //check for answer
@@ -33,17 +45,29 @@ function App() {
       setScore(score + 1);
 
     }
-  }
-
-    if(newIndex >= questions.length){
-      setGameEnded(true);
-    }
-
     //show next question
     setShowAnswers(true)
 
 
-    //if correct change scores
+    const newIndex = currentIdex + 1;
+    setCurrentIdex(newIndex);
+
+    if(newIndex >= questions.length){
+      setGameEnded(true);
+    }
+  }
+
+  
+    
+
+}
+
+
+ 
+  
+  const handleNextQuestion = () => {
+    setShowAnswers(false);
+    setCurrentIdex(currentIdex + 1)
   }
 
   return gameEnded ? (
@@ -57,6 +81,7 @@ function App() {
         <Questions 
         data={questions[currentIdex] }         
         showAnswers ={showAnswers}
+        handleNextQuestion={handleNextQuestion}
         handleAnswer={handleAnswer} />
         </div>
       ) :(
