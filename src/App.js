@@ -25,12 +25,16 @@ function App() {
   const handleAnswer =(answer) => {
     const newIndex = currentIdex + 1;
     setCurrentIdex(newIndex);
+    //stop double answers
+    if(!showAnswers){
     //check for answer
     if(answer === questions[currentIdex].correct_answer){
       //increment scores
       setScore(score + 1);
 
     }
+  }
+
     if(newIndex >= questions.length){
       setGameEnded(true);
     }
