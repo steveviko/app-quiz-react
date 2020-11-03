@@ -1,14 +1,12 @@
 import React from 'react';
-const Button =({answer}) => (
-    <button className="bg-white  p-4 text-purple-800 font-semibold rounded shadow">
-        {answer}
-    </button >
-)    
+  
 
 
-const Questions = ({handleAnswer, data: { question, correct_answer, incorrect_answers}}) => {
-    const shuffleAnswers = [correct_answer, ...incorrect_answers];
+const Questions = ({showAnswers, handleAnswer, data: { question, correct_answer, incorrect_answers}}) => {
+    const shuffleAnswers = [correct_answer, ...incorrect_answers].sort(() => Math.random()-0.5);
 
+    
+            
     return (
     <div>
         <div className="bg-white text-purple-800 p-8 rounded-lg shadow-md">
@@ -16,14 +14,35 @@ const Questions = ({handleAnswer, data: { question, correct_answer, incorrect_an
         </div>
 
         <div className="grid grid-cols-2 gap-6 mt-6">
-            <Button onClick={() => handleAnswer(shuffleAnswers[0])}  answer={shuffleAnswers[0]}/>
-            <Button onClick={() => handleAnswer(shuffleAnswers[1])} answer={shuffleAnswers[1]}/>
-            <Button onClick={() => handleAnswer(shuffleAnswers[2])} answer={shuffleAnswers[2]}/>
-            <Button onClick={() => handleAnswer(shuffleAnswers[3])} answer={shuffleAnswers[3]}/>
+            {shuffleAnswers.map((answer) => {
+            const bgColor = showAnswers ? answer === correct_answer ? 'bg-green-500' : 'bg-red-500' : 'bg-white';
+           
+         
+           
+            return (
+           
+            <button  className={` ${bgColor} 
+                 p-4 text-purple-800 font-semibold rounded shadow `}
+                 onClick={() => handleAnswer(answer)}
+                
+                
+                dangerouslySetInnerHTML={{__html:answer}} />
+            
+            ) })}
+           
         </div>
 
     </div>
     );
+
+
+    // function shuffling(__array){
+
+    //     for(let i=0; i<100; i++){
+    //         const firstIdx = Math.floor(Math.random() * __array.length);
+    //         const secondIdx = Math.floor(Math.random() * __array.length);
+    //     }
+    // }
 }
 
 export default Questions;
